@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            :root {
+                --square-dimension: 0;
+            }
+
+            body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100vh;
+                width: 100%;
+            }
+
+            .container {
+                display: flex;
+                flex-wrap: wrap;
+                align-self: center;
+                width: 960px;
+                height: 960px;
+            } 
+
+            .container > div {
+                flex: 1 0 auto;
+                border: 1px solid black;
+                box-sizing: border-box;
+                height: var(--square-dimension);
+                width: var(--square-dimension);
+            }
+        </style>
+    </head>
+    <body>
+        <button id="new-grid">New Grid</button>
+        <div class="container"></div>
+        
+        <script>
+            let container = document.querySelector(".container");
+            let newGrid = document.querySelector("#new-grid");
+            let colors = [, "rgb(255, 0, 0)", "rgb(0, 0, 255)", "rgb(255, 127, 0)", 
+                            "rgb(255, 255, 0)", "rgb(0, 255, 0)",
+                            "rgb(127, 0, 255)", "rgb(255, 0, 255)"];
+            
+            // to set the height and width of each div within the container
+            let boxSize = 16;
+            let totalBoxes = boxSize ** 2;
+            let squareDimensions = (100/boxSize) + "%";
+            document.documentElement.style.setProperty("--square-dimension", squareDimensions);
+            
+            // create a 16x16 square grid of divs
+            for (let i = 0; i < totalBoxes; i++) {
+                const div = document.createElement("div");
+                
+                div.addEventListener("mouseenter", () => {
+                    div.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                });
+                
+                container.appendChild(div);
+            }
+
+            // when creating a new grid, new variables have to also be created
+            newGrid.addEventListener("click", () => {
+                let newSize = +prompt("How squares per side for the new grid?");
+
+                if (newSize > 100) {
+                    newSize = +prompt("Cannot have over 100! How squares per side for the new grid?")
+                }
+
+                // clear the container so there are no colored divs
+                container.innerHTML = "";
+
+                let newTotal = newSize ** 2;
+                let newSqDimensions = (100/newSize) + "%";
+                document.documentElement.style.setProperty("--square-dimension", newSqDimensions);
+
+                for (let i = 0; i < newTotal; i++) {
+                    const div = document.createElement("div");
+                    
+                    div.addEventListener("mouseenter", () => {
+                        div.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    });
+                    
+                    container.appendChild(div);
+                }
+            });
+        </script>
+    </body>
+</html>
